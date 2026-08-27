@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
 const galleryItems = [
-  { id: 'gallery-01', src: '/images/gallery/gallery-01.webp', alt: 'Полёт на параплане — фотография 1' },
-  { id: 'gallery-02', src: '/images/gallery/gallery-02.webp', alt: 'Полёт на параплане — фотография 2' },
-  { id: 'gallery-03', src: '/images/gallery/gallery-03.webp', alt: 'Полёт на параплане — фотография 3' },
-  { id: 'gallery-04', src: '/images/gallery/gallery-04.webp', alt: 'Полёт на параплане — фотография 4' },
+  { id: 'gallery-01', src: `${import.meta.env.BASE_URL}images/gallery/gallery-01.webp`, alt: 'Полёт на параплане — фотография 1' },
+  { id: 'gallery-02', src: `${import.meta.env.BASE_URL}images/gallery/gallery-02.webp`, alt: 'Полёт на параплане — фотография 2' },
+  { id: 'gallery-03', src: `${import.meta.env.BASE_URL}images/gallery/gallery-03.webp`, alt: 'Полёт на параплане — фотография 3' },
+  { id: 'gallery-04', src: `${import.meta.env.BASE_URL}images/gallery/gallery-04.webp`, alt: 'Полёт на параплане — фотография 4' },
 ];
 
 function GalleryScreen() {
