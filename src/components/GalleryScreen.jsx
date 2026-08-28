@@ -11,7 +11,7 @@ function GalleryScreen() {
   const [selectedItem, setSelectedItem] = useState(null);
 
   return (
-    <>
+    <section id="gallery" className="page-section gallery-section gallery-mode">
       <div className="hero-overlay" />
       <section className="hero-content gallery-page">
         <header className="gallery-header">
@@ -51,7 +51,7 @@ function GalleryScreen() {
           />
         </div>
       )}
-    </>
+    </section>
   );
 }
 

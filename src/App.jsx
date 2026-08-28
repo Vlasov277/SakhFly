@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import HomeScreen from './components/HomeScreen';
 import BookingScreen from './components/BookingScreen';
 import GalleryScreen from './components/GalleryScreen';
-import BottomNav from './components/BottomNav';
+import ScrollBackground from './components/ScrollBackground';
 import bookingAvailability from './data/bookingAvailability';
 import './styles.css';
 
@@ -15,7 +15,6 @@ function getWeekStart(weekOffset) {
 }
 
 function App() {
-  const [screen, setScreen] = useState('home');
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [people, setPeople] = useState(1);
@@ -70,11 +69,15 @@ function App() {
     setIsModalOpen(true);
   }
 
+  function scrollToBooking() {
+    document.getElementById('booking')?.scrollIntoView({ behavior: 'smooth' });
+  }
+
   return (
     <div className="app-shell">
-      <main className={`hero-card ${screen === 'home' ? 'home-mode' : ''} ${screen === 'book' ? 'booking-mode' : ''} ${screen === 'gallery' ? 'gallery-mode' : ''}`} role="main">
-        {screen === 'home' && <HomeScreen onBook={() => setScreen('book')} />}
-        {screen === 'book' && (
+      <ScrollBackground />
+        <main className="hero-card" role="main">
+          <HomeScreen onBook={scrollToBooking} />
           <BookingScreen
             dates={dates} selectedDate={selectedDate} selectedTime={selectedTime}
             selectedDateData={selectedDateData} people={people} canSubmit={canSubmit}
@@ -83,21 +86,24 @@ function App() {
             onIncreasePeople={() => setPeople((current) => Math.min(4, current + 1))}
             onSubmit={submitBooking}
           />
-        )}
-        {screen === 'gallery' && <GalleryScreen />}
+          <GalleryScreen />
 
-        <BottomNav screen={screen} onNavigate={setScreen} />
+          <section id="contacts" className="contacts-section" aria-labelledby="contacts-title">
+            <h2 id="contacts-title">Полетели?</h2>
+            <p>Есть вопросы — напиши пилоту</p>
+            <button className="secondary-btn" type="button">Написать пилоту</button>
+          </section>
 
-        {isModalOpen && (
-          <div className="modal-backdrop" role="presentation">
-            <div className="confirmation-modal" role="dialog" aria-modal="true" aria-labelledby="confirmation-title">
-              <h2 id="confirmation-title">Есть! Ты в списке 🪂</h2>
-              <p>Осталось дождаться полётов</p>
-              <button className="primary-btn modal-button" type="button" onClick={() => setIsModalOpen(false)}>Отлично</button>
+          {isModalOpen && (
+            <div className="modal-backdrop" role="presentation">
+              <div className="confirmation-modal" role="dialog" aria-modal="true" aria-labelledby="confirmation-title">
+                <h2 id="confirmation-title">Есть! Ты в списке 🪂</h2>
+                <p>Осталось дождаться полётов</p>
+                <button className="primary-btn modal-button" type="button" onClick={() => setIsModalOpen(false)}>Отлично</button>
+              </div>
             </div>
-          </div>
-        )}
-      </main>
+          )}
+        </main>
     </div>
   );
 }

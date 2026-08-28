@@ -15,7 +15,7 @@ function BookingScreen({
   onSubmit,
 }) {
   return (
-    <>
+    <section id="booking" className="page-section booking-section booking-mode">
       <div className="hero-overlay" />
 
       <section className="hero-content booking">
@@ -95,7 +95,7 @@ function BookingScreen({
           </div>
         </div>
       </section>
-    </>
+    </section>
   );
 }
 

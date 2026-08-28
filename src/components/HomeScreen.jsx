@@ -17,7 +17,7 @@ const benefits = [
 
 function HomeScreen({ onBook }) {
   return (
-    <>
+    <section id="home" className="page-section home-section home-mode">
       <div className="hero-overlay" />
 
       <section className="hero-content">
@@ -48,7 +48,7 @@ function HomeScreen({ onBook }) {
           <button className="secondary-btn">Написать пилоту</button>
         </div>
       </section>
-    </>
+    </section>
   );
 }
 
