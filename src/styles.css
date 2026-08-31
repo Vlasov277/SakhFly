@@ -1020,12 +1020,12 @@ h3 {
 .video-diagnostics {
   position: fixed;
   top: calc(8px + env(safe-area-inset-top));
-  left: 50%;
+  right: 8px;
   z-index: 10001;
   display: flex;
-  width: min(calc(100vw - 16px), 414px);
-  flex-wrap: wrap;
-  gap: 3px 10px;
+  width: min(190px, calc(100vw - 16px));
+  flex-direction: column;
+  gap: 2px;
   padding: 7px 9px;
   border: 1px solid rgba(183, 255, 69, 0.4);
   border-radius: 8px;
@@ -1033,7 +1033,6 @@ h3 {
   color: #fff;
   font: 10px/1.25 ui-monospace, SFMono-Regular, Consolas, monospace;
   pointer-events: none;
-  transform: translateX(-50%);
 }
 
 .video-diagnostics strong {
@@ -1495,14 +1494,14 @@ h3 {
   display: flex;
   justify-content: center;
   padding-top: 48px;
-  padding-bottom: 32px;
+  padding-bottom: 14px;
 }
 
 .gallery-teaser {
   position: relative;
   width: 100%;
   margin: auto 0;
-  padding: 28px 0;
+  padding: 28px 0 12px;
 }
 
 .gallery-teaser::before {
@@ -1514,42 +1513,6 @@ h3 {
   background: radial-gradient(ellipse at 35% 45%, rgba(3, 6, 9, 0.68), rgba(3, 6, 9, 0.3) 56%, transparent 76%);
   filter: blur(8px);
   pointer-events: none;
-}
-
-.gallery-preview-strip {
-  display: flex;
-  gap: 10px;
-  margin: 28px -18px 0 0;
-  padding: 0 18px 8px 0;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scroll-behavior: smooth;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  touch-action: pan-x pan-y;
-}
-
-.gallery-preview-strip::-webkit-scrollbar {
-  display: none;
-}
-
-.gallery-preview-card {
-  width: clamp(136px, 42vw, 164px);
-  height: 205px;
-  flex: 0 0 auto;
-  padding: 0;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 14px;
-  background: rgba(8, 11, 16, 0.6);
-  scroll-snap-align: start;
-}
-
-.gallery-preview-card img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 .gallery-swipe-hint {
@@ -1660,7 +1623,7 @@ h3 {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: 60px;
+  padding-top: 38px;
   padding-bottom: calc(96px + env(safe-area-inset-bottom));
 }
 

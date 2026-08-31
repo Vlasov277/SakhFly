@@ -17,6 +17,7 @@ function getWeekStart(weekOffset) {
 
 function App() {
   const videoRef = useRef(null);
+  const [isTelegramWebApp] = useState(() => Boolean(window.Telegram?.WebApp));
   const [videoDiagnostics, setVideoDiagnostics] = useState({
     readyState: 0,
     networkState: 0,
@@ -39,6 +40,7 @@ function App() {
     video.playsInline = true;
 
     const updateDiagnostics = () => {
+      if (!isTelegramWebApp) return;
       setVideoDiagnostics({
         readyState: video.readyState,
         networkState: video.networkState,
@@ -48,22 +50,15 @@ function App() {
       });
     };
 
-    let touchFallbackActive = true;
-    const attemptPlay = async (source) => {
-      try {
-        await video.play();
-        console.log(`[flight-background] play succeeded: ${source}`);
-        if (touchFallbackActive) {
-          document.removeEventListener('touchstart', handleFirstTouch);
-          touchFallbackActive = false;
-        }
-      } catch (error) {
-        console.warn(`[flight-background] play failed: ${source}`, error);
-      } finally {
-        updateDiagnostics();
-      }
+    const fallbackEvents = ['touchstart', 'pointerdown', 'scroll'];
+    const listenerOptions = { once: true, passive: true };
+    const tryPlay = () => {
+      const promise = video.play();
+      if (promise) promise.catch(() => {});
     };
-    const handleFirstTouch = () => attemptPlay('first touchstart');
+    const removeFallbackListeners = () => {
+      fallbackEvents.forEach((eventName) => window.removeEventListener(eventName, tryPlay));
+    };
     const events = ['loadedmetadata', 'canplay', 'playing', 'stalled', 'waiting', 'error'];
     const logEvent = (event) => {
       console.log(`[flight-background] ${event.type}`, {
@@ -74,25 +69,22 @@ function App() {
         error: video.error,
       });
       updateDiagnostics();
+      if (event.type === 'playing') removeFallbackListeners();
     };
 
     events.forEach((eventName) => video.addEventListener(eventName, logEvent));
-    document.addEventListener('touchstart', handleFirstTouch, { passive: true });
-    attemptPlay('mount');
+    fallbackEvents.forEach((eventName) => window.addEventListener(eventName, tryPlay, listenerOptions));
+    tryPlay();
 
-    const telegramWebApp = window.Telegram?.WebApp;
-    if (telegramWebApp) {
-      telegramWebApp.ready();
-      attemptPlay('Telegram.WebApp.ready');
-    }
-
-    const diagnosticsTimer = window.setInterval(updateDiagnostics, 500);
+    const diagnosticsTimer = isTelegramWebApp
+      ? window.setInterval(updateDiagnostics, 1000)
+      : null;
     return () => {
-      window.clearInterval(diagnosticsTimer);
+      if (diagnosticsTimer) window.clearInterval(diagnosticsTimer);
       events.forEach((eventName) => video.removeEventListener(eventName, logEvent));
-      if (touchFallbackActive) document.removeEventListener('touchstart', handleFirstTouch);
+      removeFallbackListeners();
     };
-  }, []);
+  }, [isTelegramWebApp]);
 
   const dates = Array.from({ length: 7 }, (_, index) => {
     const date = getWeekStart(weekOffset);
@@ -168,6 +160,7 @@ function App() {
         playsInline
         preload="auto"
         disablePictureInPicture
+        poster={`${import.meta.env.BASE_URL}video-poster.webp`}
         aria-hidden="true"
       >
         <source
@@ -175,14 +168,14 @@ function App() {
           type="video/mp4"
         />
       </video>
-      <output className="video-diagnostics" aria-live="polite">
+      {isTelegramWebApp && <output className="video-diagnostics" aria-live="polite">
         <strong>VIDEO</strong>
         <span>readyState: {videoDiagnostics.readyState}</span>
         <span>networkState: {videoDiagnostics.networkState}</span>
         <span>paused: {String(videoDiagnostics.paused)}</span>
-        <span>currentTime: {videoDiagnostics.currentTime.toFixed(2)}</span>
+        <span>time: {videoDiagnostics.currentTime.toFixed(1)}</span>
         <span>error: {videoDiagnostics.error}</span>
-      </output>
+      </output>}
       <div className="app-shell">
         <main className="hero-card" role="main">
           <HomeScreen onBook={scrollToBooking} />
