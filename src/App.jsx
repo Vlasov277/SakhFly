@@ -100,12 +100,24 @@ function App() {
             onIncreasePeople={() => setPeople((current) => Math.min(4, current + 1))}
             onSubmit={submitBooking}
           />
+
+          <section className="flight-transition" aria-label="Оставим тебе кое-что на память">
+            <div className="flight-route" aria-hidden="true">
+              <span>⌄</span>
+              <i />
+              <span>⌄</span>
+            </div>
+            <p>Оставим тебе кое-что на память</p>
+          </section>
+
           <GalleryScreen />
 
           <section id="contacts" className="contacts-section" aria-labelledby="contacts-title">
-            <h2 id="contacts-title">Полетели?</h2>
-            <p>Есть вопросы — напиши пилоту</p>
-            <button className="secondary-btn" type="button" onClick={openPilotChat}>Написать пилоту</button>
+            <div className="contacts-content">
+              <h2 id="contacts-title">НУ ЧТО,<br />ПОЛЕТЕЛИ?</h2>
+              <p>Остались вопросы — напиши.<br />Расскажу про погоду, одежду и сам полёт.</p>
+              <button className="secondary-btn" type="button" onClick={openPilotChat}>НАПИСАТЬ ПИЛОТУ →</button>
+            </div>
           </section>
 
           {isModalOpen && (

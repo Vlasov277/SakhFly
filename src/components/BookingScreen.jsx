@@ -16,11 +16,18 @@ function BookingScreen({
 }) {
   return (
     <section id="booking" className="page-section booking-section booking-mode">
-      <div className="hero-overlay" />
-
       <section className="hero-content booking">
+        <div className="info-banner booking-status">
+          <p className="banner-title">Сегодня летаем!</p>
+          <p className="banner-text">Есть 2 свободных окна после 16:00</p>
+        </div>
+
         <div className="booking-header">
-          <h2>Запись на полёт</h2>
+          <h2>ВЫБЕРИ ДЕНЬ</h2>
+          <p>
+            Полёты зависят от погоды. Выбирай удобную дату —
+            ближе к полёту сверимся с прогнозом и подтвердим время.
+          </p>
         </div>
 
         <div className="booking-body">

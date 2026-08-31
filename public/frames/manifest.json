@@ -1,7 +1,0 @@
-{
-  "count": 300,
-  "source_seconds": 9.063,
-  "frames_001_030": "0.00–5.70 s (city/beach compressed to 10%)",
-  "frames_031_300": "5.70–9.063 s (sea expanded to 90%)",
-  "total_mb": 6.37
-}

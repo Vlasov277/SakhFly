@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-const FRAME_COUNT = 300;
+const FRAME_COUNT = 500;
 
 const getFrameSrc = (index) => (
   `${import.meta.env.BASE_URL}frames/frame_${String(index + 1).padStart(3, '0')}.webp`
@@ -31,13 +31,13 @@ export default function ScrollBackground() {
       const distance = Math.max(1, shellHeight - viewportHeight);
       const travelled = Math.max(0, -rect.top);
       const progress = Math.min(1, Math.max(0, travelled / distance));
-      const nextFrame = Math.min(
+      const rawFrameIndex = Math.min(
         FRAME_COUNT - 1,
         Math.floor(progress * FRAME_COUNT),
       );
 
       setFrameIndex((current) => (
-        current === nextFrame ? current : nextFrame
+        current === rawFrameIndex ? current : rawFrameIndex
       ));
     };
 
