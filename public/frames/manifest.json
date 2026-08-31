@@ -1,0 +1,13 @@
+{
+  "output_frames": 726,
+  "source_real_frames": 726,
+  "source_fps": 59.975,
+  "source_resolution": "886x1758",
+  "generated_frames": 0,
+  "interpolated_frames": 0,
+  "duplicated_frames": 0,
+  "crop": false,
+  "zoom": false,
+  "output_width_px": 540,
+  "webp_quality": 66
+}

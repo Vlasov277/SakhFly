@@ -1004,6 +1004,19 @@ h3 {
 }
 
 /* Single-page landing layout */
+.flight-background {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(100vw, 430px);
+  height: 100dvh;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+  pointer-events: none;
+}
+
 .scroll-frame {
   position: fixed;
   top: 0;

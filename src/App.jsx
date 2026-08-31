@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import HomeScreen from './components/HomeScreen';
 import BookingScreen from './components/BookingScreen';
 import GalleryScreen from './components/GalleryScreen';
-import ScrollBackground from './components/ScrollBackground';
 import bookingAvailability from './data/bookingAvailability';
 import './styles.css';
 
@@ -88,7 +87,20 @@ function App() {
 
   return (
     <>
-      <ScrollBackground />
+      <video
+        className="flight-background"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        aria-hidden="true"
+      >
+        <source
+          src={`${import.meta.env.BASE_URL}flight-bg.mp4`}
+          type="video/mp4"
+        />
+      </video>
       <div className="app-shell">
         <main className="hero-card" role="main">
           <HomeScreen onBook={scrollToBooking} />
