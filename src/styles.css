@@ -1019,9 +1019,9 @@ h3 {
 
 .video-diagnostics {
   position: fixed;
-  top: calc(8px + env(safe-area-inset-top));
-  right: 8px;
-  z-index: 10001;
+  top: 10px;
+  right: 10px;
+  z-index: 99999;
   display: flex;
   width: min(190px, calc(100vw - 16px));
   flex-direction: column;
@@ -1030,13 +1030,13 @@ h3 {
   border: 1px solid rgba(183, 255, 69, 0.4);
   border-radius: 8px;
   background: rgba(0, 0, 0, 0.78);
-  color: #fff;
-  font: 10px/1.25 ui-monospace, SFMono-Regular, Consolas, monospace;
+  color: #b7ff45;
+  font: 11px/1.35 ui-monospace, SFMono-Regular, Consolas, monospace;
   pointer-events: none;
 }
 
 .video-diagnostics strong {
-  color: var(--accent);
+  color: #b7ff45;
 }
 
 .scroll-frame {

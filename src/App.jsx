@@ -17,13 +17,18 @@ function getWeekStart(weekOffset) {
 
 function App() {
   const videoRef = useRef(null);
-  const [isTelegramWebApp] = useState(() => Boolean(window.Telegram?.WebApp));
   const [videoDiagnostics, setVideoDiagnostics] = useState({
     readyState: 0,
     networkState: 0,
     paused: true,
     currentTime: 0,
-    error: 'none',
+    duration: 0,
+    videoWidth: 0,
+    videoHeight: 0,
+    errorCode: 'none',
+    errorMessage: 'none',
+    playResult: 'waiting',
+    playError: 'none',
   });
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
@@ -40,21 +45,36 @@ function App() {
     video.playsInline = true;
 
     const updateDiagnostics = () => {
-      if (!isTelegramWebApp) return;
-      setVideoDiagnostics({
+      setVideoDiagnostics((current) => ({
+        ...current,
         readyState: video.readyState,
         networkState: video.networkState,
         paused: video.paused,
         currentTime: Number.isFinite(video.currentTime) ? video.currentTime : 0,
-        error: video.error ? `${video.error.code}: ${video.error.message || 'media error'}` : 'none',
-      });
+        duration: Number.isFinite(video.duration) ? video.duration : 0,
+        videoWidth: video.videoWidth,
+        videoHeight: video.videoHeight,
+        errorCode: video.error?.code ?? 'none',
+        errorMessage: video.error?.message || 'none',
+      }));
     };
 
     const fallbackEvents = ['touchstart', 'pointerdown', 'scroll'];
     const listenerOptions = { once: true, passive: true };
     const tryPlay = () => {
-      const promise = video.play();
-      if (promise) promise.catch(() => {});
+      setVideoDiagnostics((current) => ({ ...current, playResult: 'waiting', playError: 'none' }));
+      const playPromise = video.play();
+      if (playPromise) {
+        playPromise.then(() => {
+          setVideoDiagnostics((current) => ({ ...current, playResult: 'success', playError: 'none' }));
+        }).catch((error) => {
+          setVideoDiagnostics((current) => ({
+            ...current,
+            playResult: 'rejected',
+            playError: error?.stack || error?.message || String(error),
+          }));
+        });
+      }
     };
     const removeFallbackListeners = () => {
       fallbackEvents.forEach((eventName) => window.removeEventListener(eventName, tryPlay));
@@ -76,15 +96,13 @@ function App() {
     fallbackEvents.forEach((eventName) => window.addEventListener(eventName, tryPlay, listenerOptions));
     tryPlay();
 
-    const diagnosticsTimer = isTelegramWebApp
-      ? window.setInterval(updateDiagnostics, 1000)
-      : null;
+    const diagnosticsTimer = window.setInterval(updateDiagnostics, 500);
     return () => {
-      if (diagnosticsTimer) window.clearInterval(diagnosticsTimer);
+      window.clearInterval(diagnosticsTimer);
       events.forEach((eventName) => video.removeEventListener(eventName, logEvent));
       removeFallbackListeners();
     };
-  }, [isTelegramWebApp]);
+  }, []);
 
   const dates = Array.from({ length: 7 }, (_, index) => {
     const date = getWeekStart(weekOffset);
@@ -168,14 +186,20 @@ function App() {
           type="video/mp4"
         />
       </video>
-      {isTelegramWebApp && <output className="video-diagnostics" aria-live="polite">
-        <strong>VIDEO</strong>
+      <output className="video-diagnostics" aria-live="polite">
+        <strong>VIDEO DEBUG</strong>
         <span>readyState: {videoDiagnostics.readyState}</span>
         <span>networkState: {videoDiagnostics.networkState}</span>
         <span>paused: {String(videoDiagnostics.paused)}</span>
-        <span>time: {videoDiagnostics.currentTime.toFixed(1)}</span>
-        <span>error: {videoDiagnostics.error}</span>
-      </output>}
+        <span>currentTime: {videoDiagnostics.currentTime.toFixed(1)}</span>
+        <span>duration: {videoDiagnostics.duration.toFixed(1)}</span>
+        <span>videoWidth: {videoDiagnostics.videoWidth}</span>
+        <span>videoHeight: {videoDiagnostics.videoHeight}</span>
+        <span>error code: {videoDiagnostics.errorCode}</span>
+        <span>error message: {videoDiagnostics.errorMessage}</span>
+        <span>play result: {videoDiagnostics.playResult}</span>
+        <span>play error: {videoDiagnostics.playError}</span>
+      </output>
       <div className="app-shell">
         <main className="hero-card" role="main">
           <HomeScreen onBook={scrollToBooking} />
