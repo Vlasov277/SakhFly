@@ -1,4 +1,5 @@
 import React from 'react';
+import { FLIGHT_PRICE } from '../data/pricing';
 
 const flightSteps = [
   {
@@ -87,6 +88,11 @@ function HomeScreen({ onBook }) {
                 <p>{benefit.text}</p>
               </article>
             ))}
+          </div>
+
+          <div className="flight-price" aria-label={`Стоимость полёта ${FLIGHT_PRICE} за человека`}>
+            <span>СТОИМОСТЬ ПОЛЁТА</span>
+            <div><strong>{FLIGHT_PRICE}</strong><small>за человека</small></div>
           </div>
         </div>
       </section>
