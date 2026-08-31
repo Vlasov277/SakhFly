@@ -17,19 +17,6 @@ function getWeekStart(weekOffset) {
 
 function App() {
   const videoRef = useRef(null);
-  const [videoDiagnostics, setVideoDiagnostics] = useState({
-    readyState: 0,
-    networkState: 0,
-    paused: true,
-    currentTime: 0,
-    duration: 0,
-    videoWidth: 0,
-    videoHeight: 0,
-    errorCode: 'none',
-    errorMessage: 'none',
-    playResult: 'waiting',
-    playError: 'none',
-  });
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [people, setPeople] = useState(1);
@@ -44,62 +31,23 @@ function App() {
     video.defaultMuted = true;
     video.playsInline = true;
 
-    const updateDiagnostics = () => {
-      setVideoDiagnostics((current) => ({
-        ...current,
-        readyState: video.readyState,
-        networkState: video.networkState,
-        paused: video.paused,
-        currentTime: Number.isFinite(video.currentTime) ? video.currentTime : 0,
-        duration: Number.isFinite(video.duration) ? video.duration : 0,
-        videoWidth: video.videoWidth,
-        videoHeight: video.videoHeight,
-        errorCode: video.error?.code ?? 'none',
-        errorMessage: video.error?.message || 'none',
-      }));
-    };
-
     const fallbackEvents = ['touchstart', 'pointerdown', 'scroll'];
     const listenerOptions = { once: true, passive: true };
     const tryPlay = () => {
-      setVideoDiagnostics((current) => ({ ...current, playResult: 'waiting', playError: 'none' }));
       const playPromise = video.play();
-      if (playPromise) {
-        playPromise.then(() => {
-          setVideoDiagnostics((current) => ({ ...current, playResult: 'success', playError: 'none' }));
-        }).catch((error) => {
-          setVideoDiagnostics((current) => ({
-            ...current,
-            playResult: 'rejected',
-            playError: error?.stack || error?.message || String(error),
-          }));
-        });
-      }
+      if (playPromise) playPromise.catch(() => {});
     };
     const removeFallbackListeners = () => {
       fallbackEvents.forEach((eventName) => window.removeEventListener(eventName, tryPlay));
     };
-    const events = ['loadedmetadata', 'canplay', 'playing', 'stalled', 'waiting', 'error'];
-    const logEvent = (event) => {
-      console.log(`[flight-background] ${event.type}`, {
-        readyState: video.readyState,
-        networkState: video.networkState,
-        paused: video.paused,
-        currentTime: video.currentTime,
-        error: video.error,
-      });
-      updateDiagnostics();
-      if (event.type === 'playing') removeFallbackListeners();
-    };
+    const handlePlaying = () => removeFallbackListeners();
 
-    events.forEach((eventName) => video.addEventListener(eventName, logEvent));
+    video.addEventListener('playing', handlePlaying);
     fallbackEvents.forEach((eventName) => window.addEventListener(eventName, tryPlay, listenerOptions));
     tryPlay();
 
-    const diagnosticsTimer = window.setInterval(updateDiagnostics, 500);
     return () => {
-      window.clearInterval(diagnosticsTimer);
-      events.forEach((eventName) => video.removeEventListener(eventName, logEvent));
+      video.removeEventListener('playing', handlePlaying);
       removeFallbackListeners();
     };
   }, []);
@@ -190,20 +138,6 @@ function App() {
           type="video/mp4"
         />
       </video>
-      <output className="video-diagnostics" aria-live="polite">
-        <strong>VIDEO DEBUG</strong>
-        <span>readyState: {videoDiagnostics.readyState}</span>
-        <span>networkState: {videoDiagnostics.networkState}</span>
-        <span>paused: {String(videoDiagnostics.paused)}</span>
-        <span>currentTime: {videoDiagnostics.currentTime.toFixed(1)}</span>
-        <span>duration: {videoDiagnostics.duration.toFixed(1)}</span>
-        <span>videoWidth: {videoDiagnostics.videoWidth}</span>
-        <span>videoHeight: {videoDiagnostics.videoHeight}</span>
-        <span>error code: {videoDiagnostics.errorCode}</span>
-        <span>error message: {videoDiagnostics.errorMessage}</span>
-        <span>play result: {videoDiagnostics.playResult}</span>
-        <span>play error: {videoDiagnostics.playError}</span>
-      </output>
       <div className="app-shell">
         <main className="hero-card" role="main">
           <HomeScreen onBook={scrollToBooking} />
