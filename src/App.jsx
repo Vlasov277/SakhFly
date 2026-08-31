@@ -6,6 +6,8 @@ import ScrollBackground from './components/ScrollBackground';
 import bookingAvailability from './data/bookingAvailability';
 import './styles.css';
 
+const PILOT_TELEGRAM_URL = 'https://t.me/vlasov277';
+
 function getWeekStart(weekOffset) {
   const date = new Date();
   date.setHours(12, 0, 0, 0);
@@ -73,9 +75,21 @@ function App() {
     document.getElementById('booking')?.scrollIntoView({ behavior: 'smooth' });
   }
 
+  function openPilotChat() {
+    const openTelegramLink = window.Telegram?.WebApp?.openTelegramLink;
+
+    if (typeof openTelegramLink === 'function') {
+      openTelegramLink.call(window.Telegram.WebApp, PILOT_TELEGRAM_URL);
+      return;
+    }
+
+    window.location.href = PILOT_TELEGRAM_URL;
+  }
+
   return (
-    <div className="app-shell">
+    <>
       <ScrollBackground />
+      <div className="app-shell">
         <main className="hero-card" role="main">
           <HomeScreen onBook={scrollToBooking} />
           <BookingScreen
@@ -91,7 +105,7 @@ function App() {
           <section id="contacts" className="contacts-section" aria-labelledby="contacts-title">
             <h2 id="contacts-title">Полетели?</h2>
             <p>Есть вопросы — напиши пилоту</p>
-            <button className="secondary-btn" type="button">Написать пилоту</button>
+            <button className="secondary-btn" type="button" onClick={openPilotChat}>Написать пилоту</button>
           </section>
 
           {isModalOpen && (
@@ -104,7 +118,8 @@ function App() {
             </div>
           )}
         </main>
-    </div>
+      </div>
+    </>
   );
 }
 
