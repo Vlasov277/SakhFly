@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import flightArchive, { archiveMonths } from '../data/flightArchive';
 
 const months = ['ЯНВАРЯ', 'ФЕВРАЛЯ', 'МАРТА', 'АПРЕЛЯ', 'МАЯ', 'ИЮНЯ', 'ИЮЛЯ', 'АВГУСТА', 'СЕНТЯБРЯ', 'ОКТЯБРЯ', 'НОЯБРЯ', 'ДЕКАБРЯ'];
-const dateParts = (value) => { const [, m, d] = value.split('-').map(Number); return { day: d, month: months[m - 1] }; };
+const shortMonths = ['ЯНВ', 'ФЕВ', 'МАР', 'АПР', 'МАЙ', 'ИЮН', 'ИЮЛ', 'АВГ', 'СЕН', 'ОКТ', 'НОЯ', 'ДЕК'];
+const dateParts = (value) => { const [, m, d] = value.split('-').map(Number); return { day: d, month: months[m - 1], short: shortMonths[m - 1] }; };
 const mediaCounts = (media) => ({ photos: media.filter((x) => x.type === 'image').length, videos: media.filter((x) => x.type === 'video').length });
 
 function FlightsRow({ day, onOpenFlight }) {
@@ -23,9 +24,15 @@ function FlightsRow({ day, onOpenFlight }) {
 function GalleryScreen() {
   const [galleryOpen, setGalleryOpen] = useState(false); const [month, setMonth] = useState('АВГ');
   const [dayIndex, setDayIndex] = useState(0); const [viewer, setViewer] = useState(null);
+  const [previewDayIndex, setPreviewDayIndex] = useState(0);
   const touchRef = useRef(null); const selectedDay = flightArchive[dayIndex];
   const date = dateParts(selectedDay.date); const activeFlight = viewer ? selectedDay.flights[viewer.flightIndex] : null;
   const activeMedia = activeFlight?.media[viewer?.mediaIndex];
+  const previewDay = flightArchive[previewDayIndex];
+  const previewDate = dateParts(previewDay.date);
+  const previewFlightWord = previewDay.flights.length === 6 ? 'полётов' : 'полёта';
+  const olderDay = flightArchive[previewDayIndex + 1];
+  const newerDay = flightArchive[previewDayIndex - 1];
 
   function moveMedia(delta) { setViewer((current) => current && ({ ...current, mediaIndex: (current.mediaIndex + delta + selectedDay.flights[current.flightIndex].media.length) % selectedDay.flights[current.flightIndex].media.length })); }
   useEffect(() => {
@@ -47,9 +54,22 @@ function GalleryScreen() {
 
   return <section id="gallery" className="page-section gallery-section gallery-mode">
     <div className="hero-content gallery-page"><div className="gallery-teaser">
-      <h2>НАЙДИ СЕБЯ<br />В НЕБЕ</h2><p>Каждый полёт остаётся здесь.</p><p>Найди свой день — и забери фото<br />и видео на память.</p>
-      <div className="gallery-archive-list">{flightArchive.map((day, index) => <FlightsRow key={day.date} day={day} onOpenFlight={(flightIndex) => openFlight(index, flightIndex)} />)}</div>
-      <div className="gallery-swipe-hint">← листай полёты →</div><button className="gallery-open-btn" type="button" onClick={openGallery}>СМОТРЕТЬ ВСЕ ПОЛЁТЫ →</button>
+      <h2>НАЙДИ СЕБЯ<br />В НЕБЕ</h2><p>Фото и видео наших полётов.<br />Выбери день — возможно, ты уже здесь.</p>
+      <div className="preview-day-heading"><strong>{previewDate.day} {previewDate.month}</strong><span>{previewDay.flights.length} {previewFlightWord}</span></div>
+      <div className="preview-flight-carousel" key={previewDay.date}>
+        {previewDay.flights.map((flight, flightIndex) => <button className="preview-flight-card" type="button" key={flight.id} onClick={() => openFlight(previewDayIndex, flightIndex)}>
+          <img src={flight.media.find((item) => item.type === 'image')?.src} alt="" />
+          <span className="preview-flight-shade" /><strong>{flight.time}</strong><small>{flight.media.some((item) => item.type === 'video') ? '● видео' : '● фото'}</small>
+        </button>)}
+      </div>
+      <nav className="preview-date-nav" aria-label="Переключение лётных дней">
+        <button type="button" disabled={!olderDay} onClick={() => setPreviewDayIndex((index) => Math.min(flightArchive.length - 1, index + 1))}>←</button>
+        {olderDay && <button type="button" onClick={() => setPreviewDayIndex((index) => index + 1)}>{dateParts(olderDay.date).day} {dateParts(olderDay.date).short}</button>}
+        <span aria-hidden="true">•</span><strong>{previewDate.day} {previewDate.short}</strong>
+        {newerDay && <button type="button" onClick={() => setPreviewDayIndex((index) => index - 1)}>{dateParts(newerDay.date).day} {dateParts(newerDay.date).short}</button>}
+        <button type="button" disabled={!newerDay} onClick={() => setPreviewDayIndex((index) => Math.max(0, index - 1))}>→</button>
+      </nav>
+      <button className="gallery-open-btn" type="button" onClick={openGallery}>СМОТРЕТЬ ВСЮ ГАЛЕРЕЮ →</button>
     </div></div>
     {galleryOpen && <div className="flight-gallery" role="dialog" aria-modal="true" aria-label="Архив полётов">
       <header className="flight-gallery-header"><div><span>АРХИВ ПОЛЁТОВ</span><strong>2026</strong></div><button className="flight-gallery-close" type="button" aria-label="Закрыть галерею" onClick={() => setGalleryOpen(false)}>×</button>
