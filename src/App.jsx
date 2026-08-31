@@ -182,6 +182,10 @@ function App() {
         aria-hidden="true"
       >
         <source
+          src={`${import.meta.env.BASE_URL}flight-bg.webm`}
+          type="video/webm"
+        />
+        <source
           src={`${import.meta.env.BASE_URL}flight-bg.mp4`}
           type="video/mp4"
         />
