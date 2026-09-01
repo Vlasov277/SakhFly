@@ -138,6 +138,7 @@ function App() {
           type="video/mp4"
         />
       </video>
+      <div className="flight-dim" aria-hidden="true" />
       <div className="app-shell">
         <main className="hero-card" role="main">
           <HomeScreen onBook={scrollToBooking} />

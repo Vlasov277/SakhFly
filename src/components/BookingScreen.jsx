@@ -1,5 +1,4 @@
 import React from 'react';
-import { FLIGHT_PRICE } from '../data/pricing';
 
 function BookingScreen({
   dates,
@@ -18,14 +17,8 @@ function BookingScreen({
   return (
     <section id="booking" className="page-section booking-section booking-mode">
       <section className="hero-content booking">
-        <div className="info-banner booking-status">
-          <p className="banner-title">Сегодня летаем!</p>
-          <p className="banner-text">Есть 2 свободных окна после 16:00</p>
-        </div>
-
         <div className="booking-header">
           <h2>ВЫБЕРИ ДЕНЬ</h2>
-          <div className="booking-price">Тандемный полёт <i /> <strong>{FLIGHT_PRICE}</strong></div>
           <p>
             Полёты зависят от погоды. Выбирай удобную дату —
             ближе к полёту сверимся с прогнозом и подтвердим время.

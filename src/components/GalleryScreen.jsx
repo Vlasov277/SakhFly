@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import flightArchive, { archiveMonths } from '../data/flightArchive';
 
 const months = ['ЯНВАРЯ', 'ФЕВРАЛЯ', 'МАРТА', 'АПРЕЛЯ', 'МАЯ', 'ИЮНЯ', 'ИЮЛЯ', 'АВГУСТА', 'СЕНТЯБРЯ', 'ОКТЯБРЯ', 'НОЯБРЯ', 'ДЕКАБРЯ'];
@@ -37,8 +38,8 @@ function GalleryScreen() {
   function moveMedia(delta) { setViewer((current) => current && ({ ...current, mediaIndex: (current.mediaIndex + delta + selectedDay.flights[current.flightIndex].media.length) % selectedDay.flights[current.flightIndex].media.length })); }
   useEffect(() => {
     if (!galleryOpen) return undefined;
-    const y = window.scrollY; const old = { position: document.body.style.position, top: document.body.style.top, width: document.body.style.width };
-    Object.assign(document.body.style, { position: 'fixed', top: `-${y}px`, width: '100%' });
+    const y = window.scrollY; const old = { position: document.body.style.position, top: document.body.style.top, width: document.body.style.width, overflow: document.body.style.overflow };
+    Object.assign(document.body.style, { position: 'fixed', top: `-${y}px`, width: '100%', overflow: 'hidden' });
     return () => { Object.assign(document.body.style, old); window.scrollTo(0, y); };
   }, [galleryOpen]);
   useEffect(() => {
@@ -71,16 +72,16 @@ function GalleryScreen() {
       </nav>
       <button className="gallery-open-btn" type="button" onClick={openGallery}>СМОТРЕТЬ ВСЮ ГАЛЕРЕЮ →</button>
     </div></div>
-    {galleryOpen && <div className="flight-gallery" role="dialog" aria-modal="true" aria-label="Архив полётов">
+    {galleryOpen && createPortal(<div className="flight-gallery" role="dialog" aria-modal="true" aria-label="Архив полётов">
       <header className="flight-gallery-header"><div><span>АРХИВ ПОЛЁТОВ</span><strong>2026</strong></div><button className="flight-gallery-close" type="button" aria-label="Закрыть галерею" onClick={() => setGalleryOpen(false)}>×</button>
         <nav className="month-nav">{archiveMonths.map((item) => <button key={item} className={month === item ? 'is-active' : ''} type="button" onClick={() => setMonth(item)}>{item}</button>)}</nav>
       </header>
       <main className="flight-gallery-body">{month !== 'АВГ' ? <div className="empty-month"><strong>{month}</strong><span>Полётов пока нет</span></div> : <div className="gallery-archive-list">{flightArchive.map((day, index) => <FlightsRow key={day.date} day={day} onOpenFlight={(flightIndex) => openFlight(index, flightIndex)} />)}</div>}</main>
-      {activeMedia && <div className="media-viewer" role="dialog" aria-modal="true" onTouchStart={touchStart} onTouchEnd={(e) => touchEnd(e, moveMedia)}>
+      {activeMedia && createPortal(<div className="media-viewer" role="dialog" aria-modal="true" onTouchStart={touchStart} onTouchEnd={(e) => touchEnd(e, moveMedia)}>
         <div className="media-viewer-meta">{date.day} {date.month} · {activeFlight.time}</div><button className="media-viewer-close" type="button" aria-label="Вернуться к дню" onClick={() => setViewer(null)}>×</button>
         <button className="media-arrow media-arrow--prev" type="button" onClick={() => moveMedia(-1)}>←</button><div className="media-stage">{activeMedia.type === 'video' ? <video src={activeMedia.src} controls playsInline preload="metadata" /> : <img src={activeMedia.src} alt={activeMedia.alt} />}</div><button className="media-arrow media-arrow--next" type="button" onClick={() => moveMedia(1)}>→</button><div className="media-counter">{viewer.mediaIndex + 1} / {activeFlight.media.length}</div>
-      </div>}
-    </div>}
+      </div>, document.body)}
+    </div>, document.body)}
   </section>;
 }
 export default GalleryScreen;

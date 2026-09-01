@@ -20,9 +20,9 @@ const flightSteps = [
 ];
 
 const firstFlightBenefits = [
-  { title: 'ОПЫТ НЕ НУЖЕН', text: 'Перед стартом всё покажем и объясним' },
-  { title: '10–20 МИНУТ', text: 'Полёт длится примерно 10–20 минут' },
-  { title: 'ВСЁ ВКЛЮЧЕНО', text: 'Шлем и всё снаряжение уже включены' },
+  'Опыт не нужен',
+  'Полёт 10–20 минут',
+  'Всё снаряжение включено',
 ];
 
 function FlightTransition({ children }) {
@@ -46,10 +46,10 @@ function HomeScreen({ onBook }) {
           <div className="hero intro-copy">
             <h1>ГОТОВ ВЗГЛЯНУТЬ<br />НА ГОРОД СВЕРХУ?</h1>
             <p className="hero-description">
-              Первый полёт не требует подготовки.<br />
-              Ты летишь вместе с пилотом — остаётся<br />
-              разбежаться, оторваться от земли<br />
-              и получать удовольствие.
+              Город остаётся внизу.<br />
+              Рядом — только ветер, горы и небо.<br />
+              На несколько минут ты оказываешься там,<br />
+              где обычно летают только птицы.
             </p>
             <p className="hero-location">Южно-Сахалинск · гора Большевик</p>
             <button className="primary-btn" type="button" onClick={onBook}>Записаться на полёт</button>
@@ -83,9 +83,8 @@ function HomeScreen({ onBook }) {
 
           <div className="first-flight-benefits">
             {firstFlightBenefits.map((benefit) => (
-              <article className="first-flight-benefit" key={benefit.title}>
-                <h3>{benefit.title}</h3>
-                <p>{benefit.text}</p>
+              <article className="first-flight-benefit" key={benefit}>
+                <h3>{benefit}</h3>
               </article>
             ))}
           </div>
