@@ -1411,11 +1411,12 @@ h3 {
   min-width: 0;
   min-height: 64px;
   padding: 12px 8px;
-  border: 1px solid rgba(255, 150, 50, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.10);
   border-radius: 13px;
-  background: rgba(12, 17, 20, 0.88);
-  backdrop-filter: blur(8px);
-  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.25);
+  background: rgba(5, 10, 12, 0.25);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  box-shadow: none;
 }
 
 .first-flight-benefit h3 {
