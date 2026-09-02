@@ -151,21 +151,20 @@ function App() {
             onSubmit={submitBooking}
           />
 
-          <section className="flight-transition" aria-label="Оставим тебе кое-что на память">
+          <div className="flight-transition flight-transition--route-only" aria-hidden="true">
             <div className="flight-route" aria-hidden="true">
               <span>⌄</span>
               <i />
               <span>⌄</span>
             </div>
-            <p>Оставим тебе кое-что на память</p>
-          </section>
+          </div>
 
           <GalleryScreen />
 
           <section id="contacts" className="contacts-section" aria-labelledby="contacts-title">
             <div className="contacts-content">
               <h2 id="contacts-title">НУ ЧТО,<br />ПОЛЕТЕЛИ?</h2>
-              <p>Остались вопросы — напиши.<br />Расскажу про погоду, одежду и сам полёт.</p>
+              <p>Остались вопросы — напиши.<br />Расскажу про погоду, одежду и сам полёт.</p>
               <button className="secondary-btn" type="button" onClick={openPilotChat}>НАПИСАТЬ ПИЛОТУ →</button>
             </div>
           </section>
@@ -173,7 +172,7 @@ function App() {
           {isModalOpen && (
             <div className="modal-backdrop" role="presentation">
               <div className="confirmation-modal" role="dialog" aria-modal="true" aria-labelledby="confirmation-title">
-                <h2 id="confirmation-title">Есть! Ты в списке 🪂</h2>
+                <h2 id="confirmation-title">Есть! Ты в списке 🪂</h2>
                 <p>Осталось дождаться полётов</p>
                 <button className="primary-btn modal-button" type="button" onClick={() => setIsModalOpen(false)}>Отлично</button>
               </div>

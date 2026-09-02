@@ -5,17 +5,17 @@ const flightSteps = [
   {
     number: '01',
     title: 'ВСТРЕЧАЕМСЯ',
-    text: 'На старте знакомимся и надеваем снаряжение.',
+    text: 'На старте знакомимся и надеваем снаряжение.',
   },
   {
     number: '02',
     title: 'РАЗБЕГАЕМСЯ ВМЕСТЕ',
-    text: 'Несколько шагов — и земля остаётся внизу.',
+    text: 'Несколько шагов — и земля остаётся внизу.',
   },
   {
     number: '03',
     title: 'ЛЕТИМ',
-    text: 'Дальше просто смотри по сторонам и кайфуй.',
+    text: 'Дальше просто смотри по сторонам и кайфуй.',
   },
 ];
 
@@ -44,15 +44,15 @@ function HomeScreen({ onBook }) {
       <section id="home" className="page-section home-section home-mode">
         <section className="hero-content home-intro">
           <div className="hero intro-copy">
-            <h1>ГОТОВ ВЗГЛЯНУТЬ<br />НА ГОРОД СВЕРХУ?</h1>
+            <h1>ГОТОВ ВЗГЛЯНУТЬ<br />НА ГОРОД СВЕРХУ?</h1>
             <p className="hero-description">
               Город остаётся внизу.<br />
-              Рядом — только ветер, горы и небо.<br />
-              На несколько минут ты оказываешься там,<br />
+              Рядом — только ветер, горы и небо.<br />
+              На несколько минут ты оказываешься там,<br />
               где обычно летают только птицы.
             </p>
             <p className="hero-location">Южно-Сахалинск · гора Большевик</p>
-            <button className="primary-btn" type="button" onClick={onBook}>Записаться на полёт</button>
+            <button className="primary-btn" type="button" onClick={onBook}>Записаться на полёт</button>
           </div>
 
           <div className="scroll-hint">
@@ -62,8 +62,6 @@ function HomeScreen({ onBook }) {
           </div>
         </section>
       </section>
-
-      <FlightTransition>Несколько шагов — и ты уже в воздухе</FlightTransition>
 
       <section className="page-section first-flight-section" aria-labelledby="first-flight-title">
         <div className="first-flight-content">
@@ -91,12 +89,12 @@ function HomeScreen({ onBook }) {
 
           <div className="flight-price" aria-label={`Стоимость полёта ${FLIGHT_PRICE} за человека`}>
             <span>СТОИМОСТЬ ПОЛЁТА</span>
-            <div><strong>{FLIGHT_PRICE}</strong><small>за человека</small></div>
+            <div><strong>{FLIGHT_PRICE}</strong><small>за человека</small></div>
           </div>
         </div>
       </section>
 
-      <FlightTransition>А дальше начинается самое интересное</FlightTransition>
+      <FlightTransition>А дальше начинается самое интересное</FlightTransition>
     </>
   );
 }

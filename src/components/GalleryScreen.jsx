@@ -55,7 +55,7 @@ function GalleryScreen() {
 
   return <section id="gallery" className="page-section gallery-section gallery-mode">
     <div className="hero-content gallery-page"><div className="gallery-teaser">
-      <h2>НАЙДИ СЕБЯ<br />В НЕБЕ</h2><p>Фото и видео наших полётов.<br />Выбери день — возможно, ты уже здесь.</p>
+      <h2>НАЙДИ СЕБЯ<br />В НЕБЕ</h2><p>Фото и видео наших полётов.<br />Выбери день — возможно, ты уже здесь.</p>
       <div className="preview-day-heading"><strong>{previewDate.day} {previewDate.month}</strong><span>{previewDay.flights.length} {previewFlightWord}</span></div>
       <div className="preview-flight-carousel" key={previewDay.date}>
         {previewDay.flights.map((flight, flightIndex) => <button className="preview-flight-card" type="button" key={flight.id} onClick={() => openFlight(previewDayIndex, flightIndex)}>

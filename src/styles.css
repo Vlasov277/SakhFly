@@ -1298,6 +1298,10 @@ h3 {
   background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.42), transparent);
 }
 
+.flight-transition--route-only .flight-route i {
+  height: 80px;
+}
+
 .flight-transition p {
   position: relative;
   isolation: isolate;

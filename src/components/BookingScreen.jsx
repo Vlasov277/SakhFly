@@ -20,8 +20,8 @@ function BookingScreen({
         <div className="booking-header">
           <h2>ВЫБЕРИ ДЕНЬ</h2>
           <p>
-            Полёты зависят от погоды. Выбирай удобную дату —
-            ближе к полёту сверимся с прогнозом и подтвердим время.
+            Полёты зависят от погоды. Выбирай удобную дату —
+            ближе к полёту сверимся с прогнозом и подтвердим время.
           </p>
         </div>
 
@@ -53,7 +53,7 @@ function BookingScreen({
           </div>
 
           <div className="dates-legend" aria-label="Легенда доступности дат">
-            <span><i className="legend-dot legend-dot--available" />Зелёный — доступно для записи</span>
+            <span><i className="legend-dot legend-dot--available" />Зелёный — доступно для записи</span>
             <span><i className="legend-dot legend-dot--unavailable" />Серый — пока недоступно</span>
           </div>
 
@@ -92,7 +92,7 @@ function BookingScreen({
                 Отправить заявку
               </button>
 
-              <p className="booking-note">Полёт зависит от погодных условий. Окончательно подтверждаем ближе к дате.</p>
+              <p className="booking-note">Полёт зависит от погодных условий. Окончательно подтверждаем ближе к дате.</p>
             </div>
           </div>
         </div>
