@@ -130,11 +130,11 @@ function App() {
         aria-hidden="true"
       >
         <source
-          src={`${import.meta.env.BASE_URL}flight-bg.webm`}
+          src={`${import.meta.env.BASE_URL}videos/flight-bg.webm`}
           type="video/webm"
         />
         <source
-          src={`${import.meta.env.BASE_URL}flight-bg.mp4`}
+          src={`${import.meta.env.BASE_URL}videos/flight-bg.mp4`}
           type="video/mp4"
         />
       </video>
